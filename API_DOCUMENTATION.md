@@ -11,7 +11,7 @@ http://localhost:3000
 **Production (After Deployment):**
 
 ```
-https://your-app.railway.app
+stormhack-backend-production.up.railway.app
 ```
 
 ---
