@@ -10,6 +10,12 @@ export const getIngredientCompatibility = async (
     const { name } = req.params;
     const { filter } = req.query; // 'avoid', 'beneficial', or 'all' (default)
 
+    if (!name) {
+      return res.status(400).json({
+        error: "Bad request",
+        message: "Ingredient name is required",
+      });
+    }
     // Find the ingredient
     const ingredient = await prisma.ingredient.findUnique({
       where: { name: name.toLowerCase() },
