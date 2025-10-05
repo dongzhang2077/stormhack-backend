@@ -604,6 +604,178 @@ curl -X POST http://localhost:3000/api/voice/transcribe \
 
 ---
 
+## 7. AI Chat (GPT Integration)
+
+Direct access to GPT models using backend API key.
+
+### Endpoint
+
+```
+POST /api/ai/chat
+```
+
+### Request Headers
+
+```
+Content-Type: application/json
+```
+
+### Request Body
+
+| Field       | Type   | Required | Description                              |
+| ----------- | ------ | -------- | ---------------------------------------- |
+| messages    | array  | Yes      | Array of message objects (OpenAI format) |
+| model       | string | No       | Model name (default: "gpt-4")            |
+| temperature | number | No       | Response randomness 0-2 (default: 0.7)   |
+| max_tokens  | number | No       | Maximum response length                  |
+
+### Message Format
+
+Each message in the `messages` array must have:
+
+- `role` (string): "system", "user", or "assistant"
+- `content` (string): Message text
+
+### Request Examples
+
+**Simple question:**
+
+```bash
+curl -X POST http://localhost:3000/api/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      {"role": "user", "content": "What foods help with diabetes?"}
+    ]
+  }'
+```
+
+With system prompt:
+
+```bash
+curl -X POST http://localhost:3000/api/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      {"role": "system", "content": "You are a nutrition expert."},
+      {"role": "user", "content": "Can I eat bananas with diabetes?"}
+    ],
+    "model": "gpt-4",
+    "temperature": 0.7
+  }'
+```
+
+Conversation history:
+
+```bash
+curl -X POST http://localhost:3000/api/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      {"role": "user", "content": "I have diabetes"},
+      {"role": "assistant", "content": "I can help with diabetes nutrition advice."},
+      {"role": "user", "content": "What breakfast do you recommend?"}
+    ]
+  }'
+```
+
+JavaScript Example (React Native / Expo)
+
+```javascript
+const response = await fetch("http://localhost:3000/api/ai/chat", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    messages: [
+      { role: "system", content: "You are a helpful nutrition assistant." },
+      { role: "user", content: "I have diabetes, what should I eat for breakfast?" }
+    ],
+    model: "gpt-4",
+    temperature: 0.7
+  }),
+});
+
+const data = await response.json();
+console.log(data.message);
+Response Example
+json{
+  "message": "For diabetes, I recommend a balanced breakfast with whole grains like oatmeal, protein from eggs or Greek yogurt, and fiber-rich foods. Avoid sugary cereals and fruit juices.",
+  "usage": {
+    "prompt_tokens": 25,
+    "completion_tokens": 42,
+    "total_tokens": 67
+  },
+  "model": "gpt-4"
+}
+```
+
+### Response Fields
+
+message (string) - AI-generated response
+usage (object) - Token usage statistics
+
+prompt_tokens (number) - Input tokens
+completion_tokens (number) - Output tokens
+total_tokens (number) - Total tokens used
+
+model (string) - Model used for generation
+
+### Status Codes
+
+- `200` OK - Success
+- `400` Bad Request - Invalid request format
+- `402` Payment Required - OpenAI quota exceeded
+- `429` Too Many Requests - Rate limit exceeded (100 requests per 15 minutes)
+- `500` Internal Server Error - AI generation failed
+
+### Error Response Examples
+
+#### Missing messages:
+
+```json
+{
+  "error": "Bad request",
+  "message": "messages array is required"
+}
+```
+
+#### Invalid message format:
+
+```json
+{
+  "error": "Bad request",
+  "message": "Each message must have role and content"
+}
+```
+
+#### Quota exceeded:
+
+```json
+{
+  "error": "Quota exceeded",
+  "message": "OpenAI API quota has been exceeded"
+}
+```
+
+#### Rate limited:
+
+```json
+{
+  "error": "Too many requests",
+  "message": "Please try again later"
+}
+```
+
+### Notes
+
+- Uses backend's OpenAI API key (secure)
+- Supports all OpenAI chat models (gpt-4, gpt-3.5-turbo, etc.)
+- Rate limited to prevent abuse (100 requests per 15 minutes per IP)
+- Maximum response controlled by OpenAI's model limits
+
+---
 
 ## 🔍 Data Reference
 
