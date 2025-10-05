@@ -52,6 +52,7 @@ model Disease {
   id          String              @id @default(cuid())
   name        String              @unique
   description String?
+  type        String              @default("chronic") // "chronic" or "acute"
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
   ingredients DiseaseIngredient[]

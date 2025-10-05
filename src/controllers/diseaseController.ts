@@ -150,6 +150,7 @@ export const getAllDiseases = async (req: Request, res: Response) => {
       select: {
         name: true,
         description: true,
+        type: true, // 添加这行
       },
       orderBy: {
         name: "asc",
