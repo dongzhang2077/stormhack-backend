@@ -22,6 +22,7 @@ stormhack-backend-production.up.railway.app
 4. [Get Ingredient Compatibility](#4-get-ingredient-compatibility)
 5. [Get Disease Guide](#5-get-disease-guide)
 6. [Voice Transcription](#6-voice-transcription)
+7. [AI Chat (GPT Integration)](#7-ai-chat-gpt-integration)
 
 ---
 
@@ -602,6 +603,7 @@ curl -X POST http://localhost:3000/api/voice/transcribe \
 - Backend only handles speech-to-text; frontend handles text parsing and API routing
 
 ---
+
 
 ## 🔍 Data Reference
 

@@ -5,6 +5,7 @@ import { prisma } from "./lib/prisma";
 import ingredientRoutes from "./routes/ingredientRoutes";
 import diseaseRoutes from "./routes/diseaseRoutes";
 import voiceRouter from "./routes/voice";
+import aiRoutes from "./routes/ai";
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.get("/api/db-test", async (req: Request, res: Response) => {
 app.use("/api/ingredients", ingredientRoutes);
 app.use("/api/diseases", diseaseRoutes);
 app.use("/api/voice", voiceRouter);
+app.use("/api/ai", aiRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
