@@ -121,7 +121,6 @@ async function main() {
       name: "diabetes",
       description:
         "A metabolic disorder characterized by high blood sugar levels",
-      type: "chronic", // 添加这行
     },
   });
 
@@ -129,7 +128,6 @@ async function main() {
     data: {
       name: "hypertension",
       description: "High blood pressure condition",
-      type: "chronic", // 添加这行
     },
   });
 
@@ -137,23 +135,6 @@ async function main() {
     data: {
       name: "heart disease",
       description: "Cardiovascular conditions affecting heart function",
-      type: "chronic", // 添加这行
-    },
-  });
-
-  const cold = await prisma.disease.create({
-    data: {
-      name: "common cold",
-      description: "Viral upper respiratory infection",
-      type: "acute",
-    },
-  });
-
-  const fatigue = await prisma.disease.create({
-    data: {
-      name: "fatigue",
-      description: "Temporary exhaustion or weakness",
-      type: "acute",
     },
   });
 
