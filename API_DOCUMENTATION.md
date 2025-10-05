@@ -1,5 +1,3 @@
-# StormHack Backend API Documentation
-
 ## Base URL
 
 **Local Development:**
@@ -23,6 +21,7 @@ stormhack-backend-production.up.railway.app
 3. [Search Ingredients](#3-search-ingredients)
 4. [Get Ingredient Compatibility](#4-get-ingredient-compatibility)
 5. [Get Disease Guide](#5-get-disease-guide)
+6. [Voice Transcription](#6-voice-transcription)
 
 ---
 
@@ -536,6 +535,74 @@ console.log(data);
 
 ---
 
+## 6. Voice Transcription
+
+Convert audio recording to text (English only).
+
+### Endpoint
+
+```
+POST /api/voice/transcribe
+```
+
+### Request Headers
+
+```
+Content-Type: multipart/form-data
+```
+
+### Request Body (Form Data)
+
+| Field | Type | Required | Description                                       |
+| ----- | ---- | -------- | ------------------------------------------------- |
+| audio | File | Yes      | Audio file (mp3, mp4, mpeg, mpga, m4a, wav, webm) |
+
+### Request Example
+
+```bash
+curl -X POST http://localhost:3000/api/voice/transcribe \
+  -F "audio=@recording.webm"
+```
+
+### Response Example
+
+```json
+{
+  "text": "milk and diabetes",
+  "originalText": "Milk and diabetes"
+}
+```
+
+### Response Fields
+
+- `text` (string) - Normalized text (lowercase, trimmed)
+- `originalText` (string) - Original transcription
+
+### Status Codes
+
+- `200 OK` - Success
+- `400 Bad Request` - Missing or invalid audio file
+- `413 Payload Too Large` - File exceeds 25MB
+- `500 Internal Server Error` - Transcription failed
+
+### Error Response Example
+
+```json
+{
+  "error": "Bad request",
+  "message": "Audio file is required (field name: 'audio')"
+}
+```
+
+### Notes
+
+- Maximum file size: 25MB
+- Supported formats: mp3, mp4, mpeg, mpga, m4a, wav, webm
+- Language: English only
+- Backend only handles speech-to-text; frontend handles text parsing and API routing
+
+---
+
 ## 🔍 Data Reference
 
 ### Severity Levels
@@ -630,6 +697,18 @@ export const api = {
     });
     return response.json();
   },
+
+  // Voice transcription
+  async transcribeAudio(audioFile) {
+    const formData = new FormData();
+    formData.append("audio", audioFile);
+
+    const response = await fetch(`${API_URL}/api/voice/transcribe`, {
+      method: "POST",
+      body: formData,
+    });
+    return response.json();
+  },
 };
 ```
 
@@ -685,8 +764,13 @@ const fetchData = async () => {
 
 ## 🔄 Version
 
-**API Version:** 1.0.0  
+**API Version:** 1.1.0  
 **Last Updated:** October 4, 2025
+
+**Changelog:**
+
+- v1.1.0: Added voice transcription endpoint
+- v1.0.0: Initial release
 
 ---
 
