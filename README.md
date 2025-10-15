@@ -2,6 +2,9 @@
 
 A nutrition and health guidance API that provides food pairing recommendations, disease-specific dietary advice, voice transcription, and AI-powered chat capabilities.
 
+<img width="2048" height="1365" alt="image" src="https://github.com/user-attachments/assets/8c3ad462-a040-43e5-ac66-c5ca606bc9c9" />
+
+
 ## 🚀 Tech Stack
 
 - **Framework**: Express.js
